@@ -132,11 +132,11 @@ class EggTimerViewModel(private val app: Application) : AndroidViewModel(app) {
         }
         createTimer()
 
-        val notificationManager = ContextCompat.getSystemService(
-            app,
-            NotificationManager::class.java
-        ) as NotificationManager
-        notificationManager.sendNotification(app.getString(R.string.timer_running), app)
+//        val notificationManager = ContextCompat.getSystemService(
+//            app,
+//            NotificationManager::class.java
+//        ) as NotificationManager
+//        notificationManager.sendNotification(app.getString(R.string.timer_running), app)
     }
 
     /**
