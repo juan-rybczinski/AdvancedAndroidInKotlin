@@ -21,6 +21,7 @@ import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.eggtimernotifications.R
 import com.example.android.eggtimernotifications.databinding.FragmentEggTimerBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 
 class EggTimerFragment : Fragment() {
@@ -55,7 +58,27 @@ class EggTimerFragment : Fragment() {
             getString(R.string.egg_notification_channel_name)
         )
 
+//        retrieveToken()
+
+        createChannel(
+            getString(R.string.breakfast_notification_channel_id),
+            getString(R.string.breakfast_notification_channel_name)
+        )
+
         return binding.root
+    }
+
+    private fun retrieveToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId fail", task.exception)
+                    return@OnCompleteListener
+                }
+
+                val token = task.result?.token
+                Log.i(TAG, "FCM token is retrieved: $token")
+            })
     }
 
     private fun createChannel(channelId: String, channelName: String) {
@@ -82,6 +105,7 @@ class EggTimerFragment : Fragment() {
 
     companion object {
         fun newInstance() = EggTimerFragment()
+        private val TAG = EggTimerFragment::class.java.simpleName
     }
 }
 
